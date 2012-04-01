@@ -33,31 +33,41 @@
     font-style: normal;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    margin:0;
-    background-color:rgb(88%,88%,88%);
+    background: white;
 }
-canvas, .canvas {
-    margin:auto;
-    display:block;
-    border:1px solid gray;
-    background-color: rgba(255,255,255,0);
+
+#content {
+    text-align: center;
 }
-#background_canvas {
-    background-color: #fff;
+#content > * {
+    display: inline-block;
 }
+
+#Naubino {
+    height: 400px;
+    width: 600px;
+    border: 1px solid lightgray;
+    position: relative;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+}
+
 h1 {
     font-family: "Comfortaa";
     font-size:32pt;
     color: white;
     text-shadow: hsl(0,0%,022%) 2px 2px 4px;
 }
-#gamediv {
-    text-align:center;
-    display:block;
-    margin:auto;
-    max-width:800px;
-}
+
 #footerdiv {
     text-align:center;
     display:block;

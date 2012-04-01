@@ -7,6 +7,41 @@
 #                                        /___/         #
 ########################################################
 
+obj_merge = (a, b) ->
+  c = {}
+  c[k]=v for k, v of a
+  c[k]=v for k, v of b
+  c
+
+define ['StateMachine', 'Signal'],
+(StateMachine, Signal) ->
+ "use strict"
+ singleton = null
+ class Naubino
+  constructor: (@el, cfg) ->
+    return singleton if singleton
+    singleton = this
+
+    @game = null
+
+    @signal = signal = {}
+    for name in "mousedown mouseup".split ' '
+      signal[name] = new Signal
+
+    @canvas = canvas = {}
+    width = @el.css 'width'
+    height = @el.css 'height'
+    for name in "background game menu overlay".split ' '
+      c = $ '<canvas>'
+      @el.append c.attr { width, height }
+      canvas[name] = c[0]
+
+    @sm = StateMachine.create obj_merge cfg,
+      target: this
+      error: (a,b,c,d,e,f,err) -> throw err
+      # events:
+
+'''
 # TODO questionable approach
 window.onload = ->
   Naubino.constructor()
@@ -28,7 +63,7 @@ window.onload = ->
     @setup_keybindings()
     @setup_cursorbindings()
 
-    
+
   print: -> @gamediv.insertAdjacentHTML("afterend","<img src=\"#{@game_canvas.toDataURL()}\"/>")
 
   init_dom: () ->
@@ -63,11 +98,7 @@ window.onload = ->
   Everything has to have state
   ###
   create_fsm: ->
-    StateMachine.create {
-      target: this
-      initial: {state : 'stopped' , event: 'init'}
-      events: @Settings.events
-    }
+
 
   list_states: ->
     @.name = "Naubino"
@@ -171,3 +202,4 @@ window.onload = ->
     @overlay_canvas.addEventListener("touchend"   , onmouseup   , false)
     @overlay_canvas.addEventListener("touchmove"  , onmousemove , false)
 }
+'''
