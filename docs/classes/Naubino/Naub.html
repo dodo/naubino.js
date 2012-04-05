@@ -42,6 +42,16 @@
           <td>coffee/Naub.coffee</td>
         </tr>
       </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>a Naub is everything in the game that you can move around
+Naubs can be joined under certain circumstances 
+Naubs can be given shapes 
+</p>
+
+</div>
+<div class='tags'>
+</div>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -57,18 +67,8 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#implement-instance'>
-        - (void) <strong>implement</strong>(mixin)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#draw-instance'>
-        - (void) <strong>draw</strong>(ctx)
+        - (void) <strong>draw</strong>()
       </a>
     </span>
     <span class='desc'>
@@ -77,18 +77,8 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#draw_frame-instance'>
-        - (void) <strong>draw_frame</strong>(ctx)
-      </a>
-    </span>
-    <span class='desc'>
-      draws a frame around the buffered image for analysis
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#update-instance'>
-        - (void) <strong>update</strong>(ctx)
+        - (void) <strong>update</strong>()
       </a>
     </span>
     <span class='desc'>
@@ -98,11 +88,21 @@
   <li>
     <span class='signature'>
       <a href='#render-instance'>
-        - (void) <strong>render</strong>(ctx, x = 42, y = x)
+        - (void) <strong>render</strong>(ctx, x, y)
       </a>
     </span>
     <span class='desc'>
-      
+      executes the render method of all shapes
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#add_shape-instance'>
+        - (void) <strong>add_shape</strong>(shape)
+      </a>
+    </span>
+    <span class='desc'>
+      adds a shape and runs its setup
     </span>
   </li>
   <li>
@@ -113,26 +113,6 @@
     </span>
     <span class='desc'>
       actual painting routines
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#draw_string-instance'>
-        - (void) <strong>draw_string</strong>(ctx, string, color = 'white')
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#draw_number-instance'>
-        - (void) <strong>draw_number</strong>(ctx, offset = 0)
-      </a>
-    </span>
-    <span class='desc'>
-      
     </span>
   </li>
   <li>
@@ -331,28 +311,8 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#set_color_id-instance'>
-        - (void) <strong>set_color_id</strong>(id)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#random_palette_color-instance'>
         - (void) <strong>random_palette_color</strong>()
-      </a>
-    </span>
-    <span class='desc'>
-      colors the shape randomly and returns color id for comparison
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#random_color-instance'>
-        - (void) <strong>random_color</strong>()
       </a>
     </span>
     <span class='desc'>
@@ -373,15 +333,8 @@
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='implement-instance'>
-      - (void) <strong>implement</strong>(mixin)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='draw-instance'>
-      - (void) <strong>draw</strong>(ctx)
+      - (void) <strong>draw</strong>()
     </p>
     <div class='docstring'>
   <p>either renders live or draws updateed image
@@ -406,31 +359,8 @@
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='draw_frame-instance'>
-      - (void) <strong>draw_frame</strong>(ctx)
-    </p>
-    <div class='docstring'>
-  <p>draws a frame around the buffered image for analysis
-</p>
-
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>ctx</span>
-      <span class='type'>
-        (<tt>canvas.context</tt>)
-      </span>
-      &mdash;
-      <span class='desc'>context of the target layer</span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='update-instance'>
-      - (void) <strong>update</strong>(ctx)
+      - (void) <strong>update</strong>()
     </p>
     <div class='docstring'>
   <p>Renders the shape into a buffer
@@ -453,9 +383,26 @@
   </div>
   <div class='method_details'>
     <p class='signature' id='render-instance'>
-      - (void) <strong>render</strong>(ctx, x = 42, y = x)
+      - (void) <strong>render</strong>(ctx, x, y)
     </p>
-    <div class='tags'>
+    <div class='docstring'>
+  <p>executes the render method of all shapes
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='add_shape-instance'>
+      - (void) <strong>add_shape</strong>(shape)
+    </p>
+    <div class='docstring'>
+  <p>adds a shape and runs its setup
+</p>
+
+</div>
+<div class='tags'>
 </div>
   </div>
   <div class='method_details'>
@@ -487,20 +434,6 @@
       <span class='desc'>target naub</span>
     </li>
   </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='draw_string-instance'>
-      - (void) <strong>draw_string</strong>(ctx, string, color = 'white')
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='draw_number-instance'>
-      - (void) <strong>draw_number</strong>(ctx, offset = 0)
-    </p>
-    <div class='tags'>
 </div>
   </div>
   <div class='method_details'>
@@ -726,27 +659,8 @@
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='set_color_id-instance'>
-      - (void) <strong>set_color_id</strong>(id)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='random_palette_color-instance'>
       - (void) <strong>random_palette_color</strong>()
-    </p>
-    <div class='docstring'>
-  <p>colors the shape randomly and returns color id for comparison
-</p>
-
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='random_color-instance'>
-      - (void) <strong>random_color</strong>()
     </p>
     <div class='docstring'>
   <p>colors the shape randomly and returns color id for comparison
@@ -760,7 +674,7 @@
     </div>
     <div id='footer'>
   Generated on
-  Wed Apr 04 2012 20:45:02 GMT+0200 (CEST)
+  Fri Apr 06 2012 01:55:08 GMT+0200 (CEST)
   by
   <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
   v0.5.0

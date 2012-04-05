@@ -12,7 +12,7 @@
     &raquo;
     <span class='title'>Naubino</span>
     &raquo;
-    <span class='title'>Overlay</span>
+    <span class='title'>Shape</span>
     <nav>
       <ul>
         <li class='frames'>
@@ -34,26 +34,28 @@
     <div id='content'>
       <h1>
         Class:
-        Naubino.Overlay
+        Naubino.Shape
       </h1>
       <table class='box'>
         <tr>
-          <td>Inherits:</td>
-          <td>
-            <a href="../../classes/Naubino/Layer.html">Naubino.Layer</a>
-          </td>
-        </tr>
-        <tr>
           <td>Defined in:</td>
-          <td>coffee/Overlay.coffee</td>
+          <td>coffee/Naub.coffee</td>
         </tr>
       </table>
+      <h2>Direct Known Subclasses</h2>
+      <p class='children'>
+                <a href="undefinedclasses/Naubino/Shapes/Square.html">Naubino.Shapes.Square</a>,
+                <a href="undefinedclasses/Naubino/Shapes/Ball.html">Naubino.Shapes.Ball</a>,
+                <a href="undefinedclasses/Naubino/Shapes/Clock.html">Naubino.Shapes.Clock</a>,
+                <a href="undefinedclasses/Naubino/Shapes/Frame.html">Naubino.Shapes.Frame</a>,
+        <a href="../../classes/Naubino/Shapes/String.html">Naubino.Shapes.String</a>
+      </p>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
     <span class='signature'>
       <a href='#constructor-instance'>
-        - (void) <strong>constructor</strong>(canvas)
+        - (void) <strong>constructor</strong>()
       </a>
     </span>
     <span class='constructor note title'>Constructor</span>
@@ -63,8 +65,8 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#draw-instance'>
-        - (void) <strong>draw</strong>()
+      <a href='#setup-instance'>
+        - (void) <strong>setup</strong>(naub)
       </a>
     </span>
     <span class='desc'>
@@ -73,8 +75,19 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#warning-instance'>
-        - (void) <strong>warning</strong>(text, font_size = 25, x = @center, y = @center)
+      <a href='#color_to_rgba-instance'>
+        - (void) <strong>color_to_rgba</strong>(color, shift = 0)
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      utils
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#set_color_from_id-instance'>
+        - (void) <strong>set_color_from_id</strong>(id)
       </a>
     </span>
     <span class='desc'>
@@ -83,22 +96,12 @@
   </li>
   <li>
     <span class='signature'>
-      <a href='#fade_in_warning-instance'>
-        - (void) <strong>fade_in_warning</strong>(text, callback = null, font_size = 25, x = @center, y = @center)
+      <a href='#random_color-instance'>
+        - (void) <strong>random_color</strong>()
       </a>
     </span>
     <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#fade_in_message-instance'>
-        - (void) <strong>fade_in_message</strong>(text, callback = null, font_size = 15, color = 'black', x = @center, y = @center, ctx = @ctx)
-      </a>
-    </span>
-    <span class='desc'>
-      
+      colors the shape randomly and returns color id for comparison
     </span>
   </li>
 </ul>
@@ -106,7 +109,7 @@
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-instance'>
-      - (void) <strong>constructor</strong>(canvas)
+      - (void) <strong>constructor</strong>()
     </p>
     <div class='tags'>
 </div>
@@ -115,31 +118,42 @@
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='draw-instance'>
-      - (void) <strong>draw</strong>()
+    <p class='signature' id='setup-instance'>
+      - (void) <strong>setup</strong>(naub)
     </p>
     <div class='tags'>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='warning-instance'>
-      - (void) <strong>warning</strong>(text, font_size = 25, x = @center, y = @center)
+    <p class='signature' id='color_to_rgba-instance'>
+      - (void) <strong>color_to_rgba</strong>(color, shift = 0)
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>utils
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='set_color_from_id-instance'>
+      - (void) <strong>set_color_from_id</strong>(id)
     </p>
     <div class='tags'>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='fade_in_warning-instance'>
-      - (void) <strong>fade_in_warning</strong>(text, callback = null, font_size = 25, x = @center, y = @center)
+    <p class='signature' id='random_color-instance'>
+      - (void) <strong>random_color</strong>()
     </p>
-    <div class='tags'>
+    <div class='docstring'>
+  <p>colors the shape randomly and returns color id for comparison
+</p>
+
 </div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='fade_in_message-instance'>
-      - (void) <strong>fade_in_message</strong>(text, callback = null, font_size = 15, color = 'black', x = @center, y = @center, ctx = @ctx)
-    </p>
-    <div class='tags'>
+<div class='tags'>
 </div>
   </div>
 </div>
