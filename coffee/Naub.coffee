@@ -1,3 +1,9 @@
+
+define -> class Naub
+  constructor: ->
+
+'''
+
 class Naubino.Naub
   constructor: (@layer, @color_id = null, @size = 14) ->
     @physics = new Naubino.PhysicsModel this
@@ -61,7 +67,7 @@ class Naubino.Naub
     #ctx.fillStyle = "beige"
     #ctx.fill()
     ctx.closePath()
-    
+
   ### Renders the shape into a buffer ###
   pre_render: (ctx) ->
     @buffer = document.createElement('canvas')
@@ -77,7 +83,7 @@ class Naubino.Naub
 
     offset = 0
     ctx.translate( x, y)
-      
+
     ctx.beginPath()
     ctx.arc(offset, offset, size, 0, Math.PI * 2, false)
     ctx.closePath()
@@ -308,7 +314,7 @@ class Naubino.Naub
     click = new b2Vec2(x,y)
     click.Subtract(@physics.pos)
     (click.Length() < @size) and not @removed and not @disabled
-  
+
 
 
 
@@ -336,7 +342,7 @@ class Naubino.Naub
     palette = Naubino.colors
     id = Math.round(Math.random() * (palette.length-1))
     @set_color_id id
-    
+
   ## colors the shape randomly and returns color id for comparison
   random_color: ->
     r = Math.random()
@@ -344,3 +350,5 @@ class Naubino.Naub
     b = Math.random()
     @style.fill = [r,g,b,1]
     return -1
+
+'''

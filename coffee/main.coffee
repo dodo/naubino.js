@@ -1,38 +1,33 @@
-center_text = (text) ->
-  $el = $ '<div>'
-  $el.addClass "center_text"
-  $el.append $ "<span>#{text}</span>"
-  $el
+window.P = (x...) -> console.log 'P', x...; x
+window.M = (xs..., o={}) -> ((o[k]=v for k,v of x)for x in xs); o
 
-class Welcome
-  constructor: ->
-    @$el = center_text "Welcome"
+'''
+if 1
+  Template: class Template extends dynamictemplate.Template
+    constructor: ->
+      super
+      dynamictemplate.domify @
 
-class Game
-  constructor: ->
-    @$el = center_text "Game"
+  SvgTemplate: class SvgTemplate extends Template
+    constructor: (opts = {}) ->
+      opts.schema ?= 'svg'
+      @svgns = "http://www.w3.org/2000/svg"
+      that = this
+      super opts, -> that.svg = @$svg
+        xmlns: @svgns
+#        version: '1.1'
+#        viewBox: '0 0 1 1'
+'''
 
-class Pause
-  constructor: ->
-    @$el = center_text "Pause"
-
-define -> #['Naubino', 'WelcomeGame', 'StandardGame'], (Naubino, WelcomeGame, StandardGame) ->
-
-  welcome = new Welcome
+define ["Game"], (Game) ->
   game = new Game
-  pause = new Pause
-  welcome.$el.click ->
-    welcome.$el.hide()
-    game.$el.show()
-  game.$el.click ->
-    game.$el.hide()
-    pause.$el.show()
-  pause.$el.click ->
-    pause.$el.hide()
-    game.$el.show()
-
   window.onload = ->
     $naubino = $ '#Naubino'
-    for layer in [game, welcome, pause]
-      $naubino.append layer.$el.hide()
-    welcome.$el.show()
+    $naubino.append game.$el
+
+
+
+
+
+
+

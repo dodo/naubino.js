@@ -1,10 +1,59 @@
-# controlls everything that has to do with logic and gameplay or menus
-class Naubino.Game extends Naubino.Layer
+{ Template, domify } = window.dynamictemplate
 
-  ###
-  * get this started
-  ###
-  constructor: (canvas, @graph) ->
+class SvgTemplate extends Template
+  constructor: (attrs) ->
+    @el = null
+    @_svg = null
+    that = this
+    super schema: 'svg', attrs: xmlns: 'http://www.w3.org/2000/svg', ->
+      that._svg = @$svg attrs
+      that.el = that._svg._dom
+    domify this
+
+  # convinience function which runs a template fragment in the SVG element
+  add: (tmpl) => @_svg.add r = tmpl.call @_svg; r
+
+class RafLoop
+  constructor: (tick) ->
+    @tick = tick if tick
+    @running = false
+
+  # loops with requestAnimationFrame and calls @loop
+  loop: =>
+    @tick()
+    if @running
+      requestAnimationFrame @loop
+  start: =>
+    @loop() if !@running and @running = true
+  stop: =>
+    @running = false
+  switch: =>
+    if @running then @stop() else @start()
+
+  # overwrite! will be called in each requestAnimationFrame
+  tick: ->
+
+class SvgLayer
+  constructor: ->
+    @$el = $ '<div>'
+    @loop = new RafLoop @tick
+    @tmpl = new SvgTemplate viewBox: '0 0 1 1'
+    @tmpl.ready =>
+      @$el.append @tmpl.el
+      @loop.start()
+    @$el.click =>
+      @loop.switch()
+
+  tick: ->
+
+define ["Naub"], (Naub) -> class Game extends SvgLayer
+
+  tick: =>
+    @tmpl.add -> @$circle cx: ''+(Math.random()*1), cy: ''+(Math.random()), r: '0.1'
+    #naub = new Naub =>
+    #  @svg.add naub.el
+
+'''
     super(canvas)
     @name = "game"
     @animation.name = "game.animation"
@@ -276,3 +325,4 @@ class Naubino.Game extends Naubino.Layer
       # use all previously calculated forces and actually move the damn thing
       naub.step(dt)
 
+'''
