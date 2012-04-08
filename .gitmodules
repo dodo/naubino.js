@@ -10,3 +10,15 @@
 [submodule "lib/requirejs"]
 	path = lib/requirejs
 	url = https://github.com/jrburke/requirejs.git
+[submodule "lib/dt"]
+	path = lib/dt
+	url = git://github.com/dodo/node-dynamictemplate
+[submodule "lib/dt-dom"]
+	path = lib/dt-dom
+	url = git://github.com/dodo/node-dt-dom
+[submodule "lib/ee"]
+	path = lib/ee
+	url = https://github.com/Wolfy87/EventEmitter.git
+[submodule "lib/raf"]
+	path = lib/raf
+	url = git://gist.github.com/838785.git

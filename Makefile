@@ -29,6 +29,16 @@ all: $(NAUBINO_TARGET)
 ugly: $(NAUBINO_UGLIFIED_TARGET)
 
 
+deps:
+	git submodule update
+	cd lib/dt && npm install && cake build
+	cd lib/dt-dom && npm install && cake build
+
+
+watch:
+	coffee -o js -w coffee
+
+
 $(NAUBINO_TARGET) : $(NAUBINO_TMP)
 	cat $+ > $@
 
