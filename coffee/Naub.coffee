@@ -1,6 +1,7 @@
 
 define -> class Naub
-  constructor: ->
+  constructor: (@add_tmpl) ->
+    @add_tmpl -> @$circle cx: ''+(Math.random()*1), cy: ''+(Math.random()), r: '0.1'
 
 '''
 

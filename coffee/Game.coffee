@@ -49,9 +49,7 @@ class SvgLayer
 define ["Naub"], (Naub) -> class Game extends SvgLayer
 
   tick: =>
-    @tmpl.add -> @$circle cx: ''+(Math.random()*1), cy: ''+(Math.random()), r: '0.1'
-    #naub = new Naub =>
-    #  @svg.add naub.el
+    naub = new Naub @tmpl.add
 
 '''
     super(canvas)
