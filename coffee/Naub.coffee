@@ -1,7 +1,4 @@
-
-define -> class Naub
-  constructor: (@add_tmpl) ->
-    @add_tmpl -> @$circle cx: ''+(Math.random()*1), cy: ''+(Math.random()), r: '0.1'
+define ->
 
 '''
 

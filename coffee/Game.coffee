@@ -34,22 +34,76 @@ class RafLoop
   tick: ->
 
 class SvgLayer
-  constructor: ->
-    @$el = $ '<div>'
+  constructor: (cb) ->
+    @el = null
+    @$el = null
     @loop = new RafLoop @tick
     @tmpl = new SvgTemplate viewBox: '0 0 1 1'
     @tmpl.ready =>
-      @$el.append @tmpl.el
+      @$el = $ @el = @tmpl.el
+      @ready()
       @loop.start()
-    @$el.click =>
-      @loop.switch()
+      @$el.click =>
+        @loop.switch()
 
+  ready: ->
   tick: ->
 
-define ["Naub"], (Naub) -> class Game extends SvgLayer
+class Obj
+  next_id: 1
+  constructor: ->
+    @id = Obj::next_id++
+
+class Obj.Bag
+  constructor: -> @objs = {}
+  add: (obj) => @objs[obj.id] = obj
+  del: (obj) => delete @objs[obj.id]
+  each: (fun) => fun(obj) for id, obj of @objs; undefined
+  # does not accumulate an array in the loop cause of ^^^ -> faster
+  Object.defineProperty @::, 'length', get: -> Object.keys(@objs).length
+
+class Naub extends Obj
+  M this::, EventEmitter::
+
+  constructor: (game) ->
+    super; EventEmitter.call @
+    @game = game if game
+    @el = @game.tmpl.add -> @$circle cx: ''+(Math.random()*1), cy: ''+(Math.random()), r: '0.1'
 
   tick: =>
-    naub = new Naub @tmpl.add
+    r = +@el.attr 'r'
+    @remove() if Math.random() < 0.05
+    @el.attr r: Math.abs( r + 0.005 * (Math.random()-Math.random()) )
+
+  remove: =>
+    try
+      @el.remove()
+      @emit 'remove', @
+    catch e
+      P e
+      setTimeout @remove, 0
+
+define -> class Game extends SvgLayer
+  constructor: (@onready) ->
+    super
+    that = this
+    @naubs = new Obj.Bag
+    class @Naub extends Naub
+      game: that
+
+  ready: =>
+    @new_naub() for i in [0...10]
+    @onready?()
+
+  tick: =>
+    @new_naub() if @naubs.length < 10
+    @naubs.each (naub) -> naub.tick()
+
+  new_naub: =>
+    naub = new @Naub
+    @naubs.add naub
+    naub.on 'remove', @naubs.del
+    naub
 
 '''
     super(canvas)
