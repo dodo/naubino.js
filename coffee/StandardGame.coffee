@@ -50,7 +50,7 @@ define ["Game", "Settings"], (Game, Settings) -> class StandardGame extends Game
       {x,y} = @random_outside()
       @create_naub_pair(x,y)
       basket = @count_basket()
-      #console.log basket if basket.length > 0
+      console.log basket if basket.length > 0
       console.log "new naubs! (#{@objects_count})"
     @inner_clock = (@inner_clock + 1) % 10
 

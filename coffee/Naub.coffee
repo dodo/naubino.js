@@ -1,37 +1,41 @@
-define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
+# a Naub is everything in the game that you can move around
+# Naubs can be joined under certain circumstances 
+# Naubs can be given shapes 
+# @param layer [Layer] the layer on which to draw
+# @param color_id [int] representing the color from color palett, also neccessary for joining
+# @param size [int] size, what else
+define ["Settings", "PhysicsModel","Shapes"], (Settings, PhysicsModel) -> class Naub
   constructor: (@layer, @color_id = null, @size = 14) ->
     @physics = new PhysicsModel this
 
-    # previous constructor of shape
     @pos = @physics.pos
-    @frame = @size*2.5
-    @style = { fill: [0,0,0,1] }
+    @ctx = @layer.ctx
+    @frame = @size*1.5
     @join_style = { fill: [0,0,0,1], width: 6 }
     @life_rendering = false # if true redraw on each frame
-    # previous constructor of shape
 
-    @content = null
-    unless @color_id?
-      @color_id = @random_palette_color()
-    else
-      @set_color_id @color_id
+    # unless a color_id has been give pick a randome color
+    @color_id = @random_palette_color() unless @color_id?
 
     @physics.attracted_to = @layer.center.Copy() # gravity center
 
-    @removed = false # soon to be deleted by game
+    @removed = false # soon to be deleted by game, garbage collector
     @focused = false # currently activated by pointer
     @disabled = false # cannot join with another
+    @isClickable = yes # cannot
+
+    @shapes = [] # shapes this naub draws in order from bottom to top
 
     @joins = {} # {id: opposing naub}
     @drawing_join = {} # {id: true/false if this naub draws the join}
-    @pre_render()
-    @isClickable = yes
+    @update() #renders it for the first time
 
 
 
-
-
-
+  # Either renders shapes or draws buffer 
+  #
+  # @param ctx [canvas.context] context of the target layer
+  # set @life_rendering to true if you want to have an animated naub
   # either renders live or draws pre_rendered image
   draw: (ctx) ->
     if Settings.pre_rendering and not @life_rendering
@@ -39,78 +43,59 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
       x = @pos.x-@frame
       y = @pos.y-@frame
       #@draw_frame(ctx)
-      ctx.drawImage(@buffer, x, y)
-      ctx.restore()
-    else
-      @render ctx, @pos.x, @pos.y
+      @ctx.drawImage(@buffer, x, y)
+      @ctx.restore()
+    else # render life
+      @render(@ctx, @pos.x,@pos.y)
 
-  # draws a frame around the buffered image for analysis
-  draw_frame: (ctx) ->
-    x = @pos.x-@frame/2
-    y = @pos.y-@frame/2
-
-    ctx.beginPath()
-    ctx.moveTo x, y
-    ctx.lineTo x, @frame+y
-    ctx.lineTo @frame+x, @frame+y
-    ctx.lineTo @frame+x, y
-    ctx.lineTo x, y
-    ctx.stroke()
-    #ctx.fillStyle = "beige"
-    #ctx.fill()
-    ctx.closePath()
     
   # Renders the shape into a buffer
-  pre_render: (ctx) ->
+  # @param ctx [canvas.context] context of the target layer
+  update: () ->
     @buffer = document.createElement('canvas')
-    @buffer.width = @buffer.height = @frame*2
+    @buffer.width = @buffer.height = @frame *2
     b_ctx = @buffer.getContext('2d')
     @render b_ctx, @frame, @frame
 
-  # actual painting routines
-  render: (ctx, x = 42, y = x) ->
-    ctx.save()
-    pos = @pos
-    size= @size
+  # Executes the render method of all shapes
+  render: (ctx,x,y) ->
+    for shape in @shapes
+      shape.render(ctx,x,y)
 
-    offset = 0
-    ctx.translate( x, y)
-      
-    ctx.beginPath()
-    ctx.arc(offset, offset, size, 0, Math.PI * 2, false)
-    ctx.closePath()
+  # adds a shape and runs its setup
+  add_shape: (shape)->
+    shape.setup this
+    @shapes.push shape
 
-    ## border
-    #ctx.lineWidth = 2
-    #ctx.stroke()
+  # Returns the area value of the first shape that implements it,
+  area: ->
+    sz = @size
+    sz*sz*Math.PI
 
-    if @focused
-      # gradient
-      gradient = ctx.createRadialGradient(offset, offset, size/3, offset, offset, size)
-      gradient.addColorStop 0, @color_to_rgba(@style.fill, 80)
-      gradient.addColorStop 1, @color_to_rgba(@style.fill, 50)
-      ctx.fillStyle = gradient
-    else
-      ctx.fillStyle = @color_to_rgba(@style.fill)
-
-    # shadow
-    #ctx.shadowColor = "#333"
-    #ctx.shadowBlur = 3
-    #ctx.shadowOffsetX = 1
-    #ctx.shadowOffsetY = 1
-
-    ctx.fill()
-
-    ctx.closePath()
-
-    if @content?
-      @content.call(this, ctx, offset)
-
-    ctx.restore()
+  # Returns the area value of the first shape that implements it,
+  # assuming the bottom shape is the biggest shape.
+  # This is not exact science.
+  real_area: ->
+    for shape in @shapes
+      if shape.area
+        return shape.area()
+    return 0
 
 
 
-  ## actual painting routines
+  # runs draw_join on all partners, if this naub is the one drawing the join
+  # Otherwise the partner will draw the join.
+  draw_joins: (context) =>
+    # drawing joins
+    for id, partner of @joins
+      if @drawing_join[id]
+        @draw_join context, partner
+    return
+
+
+  # Renders join between this naub and the partner
+  # @param ctx [canvas.context] context of the target layer
+  # @param partner [naub] target naub
   draw_join: (ctx, partner) ->
     pos = @physics.pos
     pos2 = partner.physics.pos
@@ -141,28 +126,6 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
       Naubino.menu_pause.dispatch()
 
 
-  draw_string: (ctx, string, color = 'white') ->
-    ctx.fillStyle = color
-    ctx.textAlign = 'center'
-    ctx.font= "#{@size+4}px Helvetica"
-    ctx.fillText(string, 0, 6)
-
-  draw_number: (ctx, offset = 0) ->
-    @draw_string ctx, this.number
-
-
-  draw_joins: (context) =>
-    # drawing joins
-    for id, partner of @joins
-      if @drawing_join[id]
-        @draw_join context, partner
-    return
-
-
-
-
-
-
 
   ## organisation
   step: (dt) =>
@@ -174,21 +137,25 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
 
 
 
+  # makes a naub clickable and joinable again
+  disable: ->
+    @disabled = true
+    @update()
+
   # makes a naub unclickable and joinable
   enable: ->
     @disabled = false
-    @pre_render()
+    @update()
 
-  disable: ->
-    @disabled = true
-    @pre_render()
-
+  # change fill to gray
   grey_out: ->
     @style.fill = [100,100,100,1]
 
+  # sets color from @color_id
   recolor: ->
     @style.fill = Naubino.colors[@color_id]
 
+  # removes the reference to this naub from all its partners
   remove: =>
     @removed = true
     for id, naub of @joins
@@ -207,6 +174,7 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
 
 
   # animates the destruction of a naub
+  # @params callback [function] function that will be called after the animation has ended
   destroy_animation: (callback) ->
     @life_rendering = true
     shrink = =>
@@ -258,12 +226,14 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
     return joined
 
 
+  # @return [array] list of all neighboring naub_ids
   joined_naubs: ->
     list = []
     for id, naub of @joins
       list.push naub.number
     @joins
 
+  # @return [array] list of all neighboring naubs
   partners: -> x for x in @joins
 
 
@@ -271,6 +241,7 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
 
 
 
+  # @params other (naub) other naub
   distance_to: (other) ->
     unless other.number == @number
       { pos, vel, force } = @physics
@@ -292,14 +263,14 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
   # user interaction
   focus: ->
     @focused = true
-    @pre_render()
-    @physics.friction = 10
+    @update()
+    #@physics.friction = 10
     Naubino.naub_focused.dispatch(@)
 
   unfocus: ->
     @focused = false
-    @pre_render()
-    @physics.friction = @physics.default_friction
+    @update()
+    #@physics.friction = @physics.default_friction
     Naubino.naub_unfocused.dispatch(@)
 
   isHit: (x, y) ->
@@ -307,10 +278,6 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
     click.Subtract(@physics.pos)
     (click.Length() < @size) and not @removed and not @disabled
   
-
-
-
-
 
   # utils
   color_to_rgba: (color, shift = 0) =>
@@ -320,25 +287,7 @@ define ["Settings", "PhysicsModel"], (Settings, PhysicsModel) -> class Naub
     a = color[3]
     "rgba(#{r},#{g},#{b},#{a})"
 
-  # change color
-  set_color_id:(id)->
-    palette = Naubino.colors
-    pick = palette[id]
-    @style.fill = [pick[0],pick[1],pick[2], 1]# TODO automatically assume 1 if alpha is unset (pick[3])
-    id
-
-
-
   # colors the shape randomly and returns color id for comparison
   random_palette_color: ->
     palette = Naubino.colors
     id = Math.round(Math.random() * (palette.length-1))
-    @set_color_id id
-    
-  # colors the shape randomly and returns color id for comparison
-  random_color: ->
-    r = Math.random()
-    g = Math.random()
-    b = Math.random()
-    @style.fill = [r,g,b,1]
-    return -1

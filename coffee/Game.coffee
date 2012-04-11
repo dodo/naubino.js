@@ -1,5 +1,5 @@
 # controlls everything that has to do with logic and gameplay or menus
-define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extends Layer
+define ["Layer", "Settings", "Naub","Shapes"], (Layer,Settings,Naub,{Ball, Square, Frame, FrameCircle, Clock, NumberShape, StringShape}) -> class Game extends Layer
 
   # get this started
   constructor: (canvas, @graph) ->
@@ -19,6 +19,8 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
     Naubino.mousemove.add @move_pointer
     Naubino.mousedown.add @click
     Naubino.mouseup.add @unfocus
+
+    
 
     StateMachine.create {
       target: this
@@ -73,10 +75,10 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
   # @param x [int] x-ordinate
   # @param y [int] y-ordinate
   create_naub: (x = @center.x, y = @center.y) ->
-      naub_a = new Naub this
-      @add_object naub_a
-      naub_a.pre_render() # again just to get the numbers
-      naub_a.physics.pos.Set x, y
+    naub_a = new Naub this
+    @add_object naub_a
+    naub_a.pre_render() # again just to get the numbers
+    naub_a.physics.pos.Set x, y
 
 
   # create a pair of joined naubs
@@ -86,26 +88,36 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
   # @param color [int] color id of naub 1
   # @param color [int] color id of naub 2
   create_naub_pair: (x, y, color_a = null, color_b = null) ->
-      naub_a = new Naub this, color_a
-      naub_b = new Naub this, color_b
-      color_a = naub_a.color_id
-      color_b = naub_b.color_id
+    naub_a = new Naub this, color_a
+    naub_b = new Naub this, color_b
+    color_a = naub_a.color_id
+    color_b = naub_b.color_id
 
-      @add_object naub_a
-      @add_object naub_b
-      naub_a.pre_render() # again just to get the numbers
-      naub_b.pre_render() # again just to get the numbers
+    naub_a.add_shape new Ball
+    naub_b.add_shape new Ball
 
-      dir = Math.random() * Math.PI
+    color_a = naub_a.color_id
+    color_b = naub_b.color_id
 
-      naub_a.physics.pos.Set x, y
-      naub_b.physics.pos.Set x, y
+    @add_object naub_a
+    @add_object naub_b
 
-      naub_a.physics.pos.AddPolar(dir, 15)
-      naub_b.physics.pos.AddPolar(dir, -15)
+    naub_a.add_shape new NumberShape
+    naub_b.add_shape new NumberShape
 
-      naub_a.join_with naub_b
-      [color_a, color_b]
+    naub_a.update() # again just to get the numbers
+    naub_b.update() # again just to get the numbers
+
+    dir = Math.random() * Math.PI
+
+    naub_a.physics.pos.Set x, y
+    naub_b.physics.pos.Set x, y
+
+    naub_a.physics.pos.AddPolar(dir, 15)
+    naub_b.physics.pos.AddPolar(dir, -15)
+
+    naub_a.join_with naub_b
+    [color_a, color_b]
 
 
   # create a triple of joined naubs
@@ -118,12 +130,17 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
       naub_b = new Naub this
       naub_c = new Naub this
 
+      naub_a.add_shape new Ball
+      naub_b.add_shape new Ball
+      naub_c.add_shape new Ball
+
       @add_object naub_a
       @add_object naub_b
       @add_object naub_c
-      naub_a.pre_render() # again just to get the numbers
-      naub_b.pre_render() # again just to get the numbers
-      naub_c.pre_render() # again just to get the numbers
+
+      naub_a.update() # again just to get the numbers
+      naub_b.update() # again just to get the numbers
+      naub_c.update() # again just to get the numbers
 
       dir = Math.random() * Math.PI
 
@@ -136,15 +153,6 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
 
       naub_a.join_with naub_b
       naub_b.join_with naub_c
-
-  # makes every naub show its own id
-  toggle_numbers: () ->
-    unless @show_numbers?
-      @show_numbers = true
-    else @show_numbers = not @show_numbers
-    for id, naub of @objects
-      naub.content = if @show_numbers then naub.draw_number else null
-      naub.pre_render()
 
 
 
@@ -177,7 +185,7 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
         diff = @center.Copy()
         diff.Subtract naub.physics.pos
         if diff.Length() < @basket_size - naub.size/2
-          count.push naub.number
+          count.push naub
     count
 
 
@@ -202,7 +210,7 @@ define ["Layer", "Settings", "Naub"], (Layer,Settings,Naub) -> class Game extend
 
     naub_partners = (partner.number for id, partner of naub.joins)
     other_partners = (partner.number for id, partner of other.joins)
-    close_related = naub_partners.some (x) -> x in other_partners
+    close_related = naub_partners.some (x) -> x in other_partners # "some" is standard js and means "filter"
 
     joined = naub.is_joined_with other
     alone = Object.keys(naub.joins).length == 0

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>CoffeeScript API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+</head>
+  <body>
+    <div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Naubino</span>
+    &raquo;
+    <span class='title'>Naub</span>
+    <nav>
+      <ul>
+        <li class='frames'>
+          (<a class='frames' href='../../frames.html'>frames</a>)
+        </li>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Class List</a>
+      <a id='method_list_link' href='../../method_list.html'>Method List</a>
+      <a id='file_list_link' href='../../file_list.html'>File List</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Naubino.Naub
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>coffee/Naub.coffee</td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>a Naub is everything in the game that you can move around
+Naubs can be joined under certain circumstances 
+Naubs can be given shapes 
+</p>
+
+</div>
+<div class='tags'>
+</div>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>(layer, color_id = null, size = 14)
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#draw-instance'>
+        - (void) <strong>draw</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      either renders live or draws updateed image set @life_rendering to true if you want to have an animated naub
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#update-instance'>
+        - (void) <strong>update</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Renders the shape into a buffer
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#render-instance'>
+        - (void) <strong>render</strong>(ctx, x, y)
+      </a>
+    </span>
+    <span class='desc'>
+      executes the render method of all shapes
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#add_shape-instance'>
+        - (void) <strong>add_shape</strong>(shape)
+      </a>
+    </span>
+    <span class='desc'>
+      adds a shape and runs its setup
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#draw_join-instance'>
+        - (void) <strong>draw_join</strong>(ctx, partner)
+      </a>
+    </span>
+    <span class='desc'>
+      actual painting routines
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#draw_joins-instance'>
+        - (void) <strong>draw_joins</strong>(context)
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#step-instance'>
+        - (void) <strong>step</strong>(dt)
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      # organisation
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#disable-instance'>
+        - (void) <strong>disable</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      makes a naub clickable and joinable again
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#enable-instance'>
+        - (void) <strong>enable</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      makes a naub unclickable and joinable
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#grey_out-instance'>
+        - (void) <strong>grey_out</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      change fill to gray
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#recolor-instance'>
+        - (void) <strong>recolor</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      sets color from @color_id
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#remove-instance'>
+        - (void) <strong>remove</strong>()
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      removes the reference to this naub from all its partners
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroy-instance'>
+        - (void) <strong>destroy</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      animated remove with disabling
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroy_animation-instance'>
+        - (void) <strong>destroy_animation</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      animates the destruction of a naub @params callback [function] function that will be called after the animation has ended
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#join_with-instance'>
+        - (void) <strong>join_with</strong>(other)
+      </a>
+    </span>
+    <span class='desc'>
+      do things a naub is supposed to do
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#replace_with-instance'>
+        - (void) <strong>replace_with</strong>(other)
+      </a>
+    </span>
+    <span class='desc'>
+      the 'other' naub takes my place
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#is_joined_with-instance'>
+        - (void) <strong>is_joined_with</strong>(other)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#joined_naubs-instance'>
+        - (array) <strong>joined_naubs</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#partners-instance'>
+        - (array) <strong>partners</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#distance_to-instance'>
+        - (void) <strong>distance_to</strong>(other)
+      </a>
+    </span>
+    <span class='desc'>
+      @params other (naub) other naub
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#focus-instance'>
+        - (void) <strong>focus</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      user interaction
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#unfocus-instance'>
+        - (void) <strong>unfocus</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#isHit-instance'>
+        - (void) <strong>isHit</strong>(x, y)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#color_to_rgba-instance'>
+        - (void) <strong>color_to_rgba</strong>(color, shift = 0)
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      utils
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#random_palette_color-instance'>
+        - (void) <strong>random_palette_color</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      colors the shape randomly and returns color id for comparison
+    </span>
+  </li>
+</ul>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>(layer, color_id = null, size = 14)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='draw-instance'>
+      - (void) <strong>draw</strong>()
+    </p>
+    <div class='docstring'>
+  <p>either renders live or draws updateed image
+
+</p>
+<p>set @life_rendering to true if you want to have an animated naub
+</p>
+
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>ctx</span>
+      <span class='type'>
+        (<tt>canvas.context</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>context of the target layer</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='update-instance'>
+      - (void) <strong>update</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Renders the shape into a buffer
+</p>
+
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>ctx</span>
+      <span class='type'>
+        (<tt>canvas.context</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>context of the target layer</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='render-instance'>
+      - (void) <strong>render</strong>(ctx, x, y)
+    </p>
+    <div class='docstring'>
+  <p>executes the render method of all shapes
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='add_shape-instance'>
+      - (void) <strong>add_shape</strong>(shape)
+    </p>
+    <div class='docstring'>
+  <p>adds a shape and runs its setup
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='draw_join-instance'>
+      - (void) <strong>draw_join</strong>(ctx, partner)
+    </p>
+    <div class='docstring'>
+  <p>actual painting routines
+</p>
+
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>ctx</span>
+      <span class='type'>
+        (<tt>canvas.context</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>context of the target layer</span>
+    </li>
+    <li>
+      <span class='name'>partner</span>
+      <span class='type'>
+        (<tt>naub</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>target naub</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='draw_joins-instance'>
+      - (void) <strong>draw_joins</strong>(context)
+      (bound)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='step-instance'>
+      - (void) <strong>step</strong>(dt)
+      (bound)
+    </p>
+    <div class='docstring'>
+  <h1>organisation</h1>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='disable-instance'>
+      - (void) <strong>disable</strong>()
+    </p>
+    <div class='docstring'>
+  <p>makes a naub clickable and joinable again
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='enable-instance'>
+      - (void) <strong>enable</strong>()
+    </p>
+    <div class='docstring'>
+  <p>makes a naub unclickable and joinable
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='grey_out-instance'>
+      - (void) <strong>grey_out</strong>()
+    </p>
+    <div class='docstring'>
+  <p>change fill to gray
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='recolor-instance'>
+      - (void) <strong>recolor</strong>()
+    </p>
+    <div class='docstring'>
+  <p>sets color from @color_id
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='remove-instance'>
+      - (void) <strong>remove</strong>()
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>removes the reference to this naub from all its partners
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroy-instance'>
+      - (void) <strong>destroy</strong>()
+    </p>
+    <div class='docstring'>
+  <p>animated remove with disabling  
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroy_animation-instance'>
+      - (void) <strong>destroy_animation</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>animates the destruction of a naub
+@params callback [function] function that will be called after the animation has ended
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='join_with-instance'>
+      - (void) <strong>join_with</strong>(other)
+    </p>
+    <div class='docstring'>
+  <p>do things a naub is supposed to do
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='replace_with-instance'>
+      - (void) <strong>replace_with</strong>(other)
+    </p>
+    <div class='docstring'>
+  <p>the &#39;other&#39; naub takes my place 
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='is_joined_with-instance'>
+      - (void) <strong>is_joined_with</strong>(other)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='joined_naubs-instance'>
+      - (array) <strong>joined_naubs</strong>()
+    </p>
+    <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'>
+        (<tt>array</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>list of all neighboring naub_ids</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='partners-instance'>
+      - (array) <strong>partners</strong>()
+    </p>
+    <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'>
+        (<tt>array</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>list of all neighboring naubs</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='distance_to-instance'>
+      - (void) <strong>distance_to</strong>(other)
+    </p>
+    <div class='docstring'>
+  <p>@params other (naub) other naub
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='focus-instance'>
+      - (void) <strong>focus</strong>()
+    </p>
+    <div class='docstring'>
+  <p>user interaction
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='unfocus-instance'>
+      - (void) <strong>unfocus</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='isHit-instance'>
+      - (void) <strong>isHit</strong>(x, y)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='color_to_rgba-instance'>
+      - (void) <strong>color_to_rgba</strong>(color, shift = 0)
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>utils
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='random_palette_color-instance'>
+      - (void) <strong>random_palette_color</strong>()
+    </p>
+    <div class='docstring'>
+  <p>colors the shape randomly and returns color id for comparison
+</p>
+
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Fri Apr 06 2012 01:55:08 GMT+0200 (CEST)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
+  v0.5.0
+  (Node.js v0.6.14).
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

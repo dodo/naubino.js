@@ -1,7 +1,7 @@
 # all colors (except color_output) found at colorlovers.com
 define -> Settings = {
 
-  pre_rendering:  on
+  updating:  on
   gravity:
     menu:         on
     game:         on

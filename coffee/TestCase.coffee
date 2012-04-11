@@ -5,12 +5,13 @@ define ["Game", "Settings"], (Game, Settings) -> class TestCase extends Game
     Settings.show_numbers = on
     #@create_some_naubs 2
     @create_matching_naubs()
-    @toggle_numbers()
+
     @gravity = on
 
   onplaying: ->
     weightless = => @gravity = off
-    setTimeout(weightless, 4000)
+    #setTimeout(weightless, 4000)
+    Settings.updating = off
 
     basket = 150
     @animation.play()
@@ -32,3 +33,10 @@ define ["Game", "Settings"], (Game, Settings) -> class TestCase extends Game
     inner_basket = @count_basket()
     @destroy_naubs inner_basket
 
+  filling_level: ->
+    bs = @basket_size/2
+    console.info Math.ceil bs * bs * Math.PI
+    @filling =0
+    for naub in @count_basket()
+      @filling += naub.area()
+    console.warn @filling
