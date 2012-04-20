@@ -88,6 +88,14 @@ define ["PhysicsModel"], (PhysicsModel) -> class Naub
     return 0
 
 
+  # runs draw_join on all partners, if this naub is the one drawing the join
+  # Otherwise the partner will draw the join.
+  draw_joins: (context) =>
+    # drawing joins
+    for id, partner of @joins
+      if @drawing_join[id]
+        @draw_join context, partner
+    return
 
   # runs draw_join on all partners, if this naub is the one drawing the join
   # Otherwise the partner will draw the join.

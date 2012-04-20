@@ -33,7 +33,7 @@ define ["Background", "Game", "Graph", "Keybindings", "Menu", "Overlay", "Standa
     @setup_cursorbindings()
     console.timeEnd("loading")
 
-    
+
   print: -> @gamediv.insertAdjacentHTML("afterend","<img src=\"#{@game_canvas.toDataURL()}\"/>")
 
   init_dom: () ->
@@ -87,7 +87,7 @@ define ["Background", "Game", "Graph", "Keybindings", "Menu", "Overlay", "Standa
 
   onchangestate: (e,f,t)-> console.info "Naubino changed states #{e}: #{f} -> #{t}"
   onbeforeplay: (event, from, to) -> @game.play()
-  onenterplaying: -> @menu.play()
+  #onenterplaying: -> @menu.play()
 
   toggle: ->
     switch @current
