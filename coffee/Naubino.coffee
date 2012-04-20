@@ -12,7 +12,7 @@
 #   Naubino.constructor()
 
 
-define "Background Game Graph Keybindings Menu Overlay StandardGame TestCase Settings Tutorial".split(" "), (Background, Game, Graph, KeyBindings, Menu, Overlay, StandardGame, TestCase, Settings, Tutorial) -> console.log "Über das define"; class Naubino
+define "Background Game Graph Keybindings Menu Overlay StandardGame TestCase Settings Tutorial".split(" "), (Background, Game, Graph, KeyBindings, Menu, Overlay, StandardGame, TestCase, Settings, Tutorial) -> class Naubino
   constructor: () ->
     console.log "Naubino Constructor"
 
@@ -30,7 +30,7 @@ define "Background Game Graph Keybindings Menu Overlay StandardGame TestCase Set
     @setup_keybindings()
     @setup_cursorbindings()
 
-    
+
   print: -> @gamediv.insertAdjacentHTML("afterend","<img src=\"#{@game_canvas.toDataURL()}\"/>")
 
   init_dom: () ->

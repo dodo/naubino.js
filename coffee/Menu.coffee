@@ -1,5 +1,5 @@
 # TODO clean up menu code -- will do in naub_rethought
-define ["Menu", "Layer", "Naub", "Settings"], (Menu, Layer, Naub, Settings) -> class Menu extends Layer
+define ["Layer", "Naub", "Settings"], (Layer, Naub, Settings) -> class Menu extends Layer
   constructor: (canvas) ->
     super(canvas)
     @name = "menu"
@@ -14,10 +14,10 @@ define ["Menu", "Layer", "Naub", "Settings"], (Menu, Layer, Naub, Settings) -> c
     Naubino.mousedown.add @click
     Naubino.naub_destroyed.add -> Naubino.menu.objects.main.update()
     Naubino.menu_button.active = false
-   
+
     @position = new b2Vec2(20,25)
     @cube_size = 45
-    
+
     StateMachine.create {
       target:this
       events: Settings.events
